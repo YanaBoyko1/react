@@ -1,9 +1,12 @@
+// src/components/PrimaryButton/PrimaryButton.js
 import React from 'react';
-import { StyledButton } from './PrimaryButton.styles'; 
 
-function PrimaryButton({ children }) {
-  return <StyledButton>{children}</StyledButton>;
+function PrimaryButton({ children, onClick }) {
+  return (
+    <button onClick={onClick} style={{ padding: '10px 20px', cursor: 'pointer' }}>
+      {children}
+    </button>
+  );
 }
 
 export default PrimaryButton;
-

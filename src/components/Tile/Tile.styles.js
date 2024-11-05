@@ -6,14 +6,10 @@ export const TileContainer = styled.div`
   text-align: center;
   background-color: rgba(252, 241, 249, 1);
   border-radius: 10px;
-  /* margin: 10px; */
+  margin: 20px; /* Використовуйте margin для зовнішнього відступу */
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
-  margin-bottom: 130px;
-  margin-top: 40px;
-  margin-left: 75px;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 export const TileImage = styled.img`
@@ -54,4 +50,3 @@ export const ViewMoreButton = styled.button`
     background-color: gray;
   }
 `;
-

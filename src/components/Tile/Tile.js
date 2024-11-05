@@ -1,17 +1,25 @@
+// src/components/Tile/Tile.js
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TileContainer, TileImage, TileTitle, TileDescription, TilePrice, ViewMoreButton } from './Tile.styles';
 
-function Tile({ title, description, image, price, showExtra }) {
+function Tile({ id, title, description, image, price, showExtra }) {
+  const navigate = useNavigate();
+
+  const handleViewMore = () => {
+    navigate(`/item/${id}`); // Перехід на сторінку з ідентифікатором товару
+  };
+
   return (
     <TileContainer>
       <TileImage src={image} alt={title} />
       <TileTitle>{title}</TileTitle>
       <TileDescription>{description}</TileDescription>
 
-      {showExtra && (
+      {showExtra && ( // Відображаємо кнопку "View more" тільки якщо showExtra === true
         <>
           <TilePrice>Price: ${price}</TilePrice>
-          <ViewMoreButton>View more</ViewMoreButton>
+          <ViewMoreButton onClick={handleViewMore}>View more</ViewMoreButton>
         </>
       )}
     </TileContainer>
@@ -19,4 +27,3 @@ function Tile({ title, description, image, price, showExtra }) {
 }
 
 export default Tile;
-

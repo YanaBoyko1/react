@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export const HeaderContainer = styled.header`
+  position: sticky;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,7 +14,7 @@ export const HeaderContainer = styled.header`
 export const Logo = styled.div`
   font-size: 24px;
   font-weight: bold;
-  min-width: 120px;
+  max-width: 40px;
   color: rgba(70, 62, 135, 1);
 `;
 
@@ -21,11 +22,13 @@ export const Nav = styled.nav`
   flex: 1;
   display: flex;
   justify-content: center;
+  margin-left: -10px;
 
   ul {
     display: flex;
     list-style-type: none;
     padding: 0;
+    margin-left: -40px;
     margin: 0;
     font-size: 20px;
     font-weight: 500;
@@ -44,5 +47,5 @@ export const StyledLink = styled(Link)`
 `;
 
 export const SearchContainer = styled.div`
-  min-width: 150px; 
+  max-width: 100px; 
 `;

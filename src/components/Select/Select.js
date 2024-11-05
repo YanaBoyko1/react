@@ -1,16 +1,15 @@
-
+// src/components/Select/Select.js
 import React from 'react';
-import { StyledSelect } from './Select.styles'; 
 
-function Select({ options }) {
+function Select({ options, onChange }) {
   return (
-    <StyledSelect>
+    <select onChange={onChange} style={{ padding: '8px', borderRadius: '4px' }}>
       {options.map((option, index) => (
         <option key={index} value={option}>
           {option}
         </option>
       ))}
-    </StyledSelect>
+    </select>
   );
 }
 

@@ -1,7 +1,21 @@
-import React from 'react';
-import { HeaderContainer, Logo, Nav, StyledLink, SearchContainer } from './Header.styles'; 
+// src/components/Header/Header.js
+import React, { useContext } from 'react';
+import { HeaderContainer, Logo, Nav, StyledLink, SearchContainer } from './Header.styles';
+import { ItemContext } from '../../context/ItemContext';
 
 function Header({ showSearch }) {
+  const { setSearchTerm, applyFilters } = useContext(ItemContext); // Отримуємо applyFilters
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      applyFilters(); 
+    }
+  };
+
   return (
     <HeaderContainer>
       <Logo>BoatPro</Logo>
@@ -12,9 +26,17 @@ function Header({ showSearch }) {
           <li><StyledLink to="/cart">Cart</StyledLink></li>
         </ul>
       </Nav>
-      <SearchContainer>
-        {showSearch && <input type="text" placeholder="Search..." style={{ width: '100%' }} />}
-      </SearchContainer>
+      {showSearch && (
+        <SearchContainer>
+          <input
+            type="text"
+            placeholder="Search..."
+            onChange={handleSearchChange}
+            onKeyPress={handleKeyPress} // Додаємо обробник клавіш
+            style={{ width: '100%' }}
+          />
+        </SearchContainer>
+      )}
     </HeaderContainer>
   );
 }
