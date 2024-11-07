@@ -1,8 +1,9 @@
+// src/components/TileSection/TileSection.js
 import React from 'react';
 import Tile from '../Tile/Tile';
-import { ButtonContainer, VisitButton } from './TileSection.styles'; 
+import { ButtonContainer, VisitButton } from './TileSection.styles';
 
-function TileSection({ items, showExtra, onShowMore, isHomePage }) {
+function TileSection({ items, onShowMore, isHomePage, showMoreVisible }) {
   if (!items || items.length === 0) {
     return <div>No items found</div>;
   }
@@ -18,14 +19,15 @@ function TileSection({ items, showExtra, onShowMore, isHomePage }) {
             description={item.description}
             image={item.image}
             price={item.price}
-            showExtra={showExtra} 
+            showExtra={!isHomePage} // Відображаємо "View More" тільки на сторінці каталогу
           />
         ))}
       </div>
-      {isHomePage && (
+
+      {isHomePage && showMoreVisible && ( // Відображаємо кнопку "Visit" тільки на головній сторінці
         <ButtonContainer>
-          <VisitButton onClick={onShowMore}> 
-            Visit 
+          <VisitButton onClick={onShowMore}>
+            Show More
           </VisitButton>
         </ButtonContainer>
       )}

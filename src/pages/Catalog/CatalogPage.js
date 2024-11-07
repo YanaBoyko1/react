@@ -1,21 +1,30 @@
-
+// CatalogPage.js
 import React, { useContext } from 'react';
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
+import { ItemContext } from '../../context/ItemContext';
 import TileSection from '../../components/TileSection/TileSection';
 import FilterBar from '../../components/FilterBar/FilterBar';
-import { ItemContext } from '../../context/ItemContext';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
+import Spinner from '../../components/Spinner/Spinner';
 
 function CatalogPage() {
-  const { filteredItems } = useContext(ItemContext); 
+  const { catalogItems, loading, setSearchTerm, updateFilters } = useContext(ItemContext);
 
   return (
-    <div>
-      <Header showSearch />
-      <FilterBar /> 
-      <TileSection items={filteredItems} showExtra showViewMore={false} /> 
+    <>
+      <Header showSearch={true} setSearchTerm={setSearchTerm} />
+      <FilterBar onFilterChange={updateFilters} />
+      {loading ? (
+        <Spinner />
+      ) : (
+        <TileSection
+          items={catalogItems}
+          isHomePage={false} // Вказуємо, що це не головна сторінка, показуємо "View More"
+          showExtra={true} // Показуємо кнопку "View More" на кожному елементі каталогу
+        />
+      )}
       <Footer />
-    </div>
+    </>
   );
 }
 

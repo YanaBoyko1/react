@@ -7,20 +7,21 @@ function Tile({ id, title, description, image, price, showExtra }) {
   const navigate = useNavigate();
 
   const handleViewMore = () => {
-    navigate(`/item/${id}`); // Перехід на сторінку з ідентифікатором товару
+    navigate(`/item/${id}`);
   };
 
   return (
     <TileContainer>
-      <TileImage src={image} alt={title} />
+      {/* Відображення зображення товару */}
+      <TileImage src={`http://localhost:5000${image}`} alt={title} />
+
       <TileTitle>{title}</TileTitle>
       <TileDescription>{description}</TileDescription>
+      <TilePrice>Price: ${price}</TilePrice>
 
-      {showExtra && ( // Відображаємо кнопку "View more" тільки якщо showExtra === true
-        <>
-          <TilePrice>Price: ${price}</TilePrice>
-          <ViewMoreButton onClick={handleViewMore}>View more</ViewMoreButton>
-        </>
+      {/* Кнопка "View More", якщо showExtra === true */}
+      {showExtra && (
+        <ViewMoreButton onClick={handleViewMore}>View More</ViewMoreButton>
       )}
     </TileContainer>
   );
