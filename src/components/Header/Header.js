@@ -1,17 +1,18 @@
-// Header.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { HeaderContainer, Logo, Nav, StyledLink, SearchContainer } from './Header.styles';
+import { ItemContext } from '../../context/ItemContext'; // Імпортуємо ItemContext
 
-function Header({ showSearch, setSearchTerm }) {
-  const [inputValue, setInputValue] = useState(''); // Local state for search input
+function Header({ showSearch }) {
+  const { setSearchTerm } = useContext(ItemContext); // Отримуємо setSearchTerm з контексту
+  const [inputValue, setInputValue] = useState(''); // Локальний стан для пошукового поля
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value); // Update input field value only
+    setInputValue(e.target.value); // Оновлюємо значення поля
   };
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      setSearchTerm(inputValue); // Apply search term only when Enter is pressed
+      setSearchTerm(inputValue); // Застосовуємо пошуковий термін при натисканні Enter
     }
   };
 
@@ -32,7 +33,7 @@ function Header({ showSearch, setSearchTerm }) {
             placeholder="Search..."
             value={inputValue}
             onChange={handleInputChange}
-            onKeyPress={handleKeyPress} // Trigger search only on Enter key press
+            onKeyPress={handleKeyPress} // Пошук тригериться тільки при Enter
             style={{ width: '100%' }}
           />
         </SearchContainer>
@@ -42,4 +43,3 @@ function Header({ showSearch, setSearchTerm }) {
 }
 
 export default Header;
-

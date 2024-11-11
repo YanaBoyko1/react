@@ -1,5 +1,4 @@
-// CatalogPage.js
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ItemContext } from '../../context/ItemContext';
 import TileSection from '../../components/TileSection/TileSection';
 import FilterBar from '../../components/FilterBar/FilterBar';
@@ -8,19 +7,27 @@ import Footer from '../../components/Footer/Footer';
 import Spinner from '../../components/Spinner/Spinner';
 
 function CatalogPage() {
-  const { catalogItems, loading, setSearchTerm, updateFilters } = useContext(ItemContext);
+  const { catalogItems, loading, loadCatalogItems, resetFiltersAndSearch } = useContext(ItemContext);
+
+  useEffect(() => {
+    resetFiltersAndSearch(); // Очищення фільтрів при завантаженні сторінки
+  }, []);
+
+  const handleFilterChange = (filters) => {
+    loadCatalogItems(filters); // Викликаємо `loadCatalogItems` з фільтрами
+  };
 
   return (
     <>
-      <Header showSearch={true} setSearchTerm={setSearchTerm} />
-      <FilterBar onFilterChange={updateFilters} />
+      <Header showSearch={true} />
+      <FilterBar onFilterChange={handleFilterChange} />
       {loading ? (
         <Spinner />
       ) : (
         <TileSection
           items={catalogItems}
-          isHomePage={false} // Вказуємо, що це не головна сторінка, показуємо "View More"
-          showExtra={true} // Показуємо кнопку "View More" на кожному елементі каталогу
+          isHomePage={false}
+          showExtra={true}
         />
       )}
       <Footer />

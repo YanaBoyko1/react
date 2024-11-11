@@ -1,5 +1,4 @@
-// App.js
-import React, { useContext, useState } from 'react'; // Додаємо useContext та useState
+import React, { useContext, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -8,14 +7,17 @@ import TileSection from './components/TileSection/TileSection';
 import Spinner from './components/Spinner/Spinner';
 import CatalogPage from './pages/Catalog/CatalogPage';
 import ItemPage from './pages/Item/ItemPage';
-import { ItemProvider, ItemContext } from './context/ItemContext'; // Імпортуємо ItemContext та ItemProvider
+import { ItemProvider, ItemContext } from './context/ItemContext'; // Правильний імпорт
+
+// решта коду
+
 
 function HomeContent() {
-  const { homeItems, loading } = useContext(ItemContext); // Використовуємо homeItems з контексту
+  const { homeItems, loading } = useContext(ItemContext);
   const [visibleItemsCount, setVisibleItemsCount] = useState(3);
 
   const handleShowMore = () => {
-    setVisibleItemsCount(prevCount => prevCount + 3); // Збільшуємо видимі товари на 3 при натисканні
+    setVisibleItemsCount(prevCount => prevCount + 3);
   };
 
   if (loading) {
@@ -27,10 +29,10 @@ function HomeContent() {
       <Header showSearch={false} />
       <MainSection />
       <TileSection
-        items={homeItems.slice(0, visibleItemsCount)} // Показуємо тільки обмежену кількість товарів
-        isHomePage={true} // Вказуємо, що це головна сторінка
+        items={homeItems.slice(0, visibleItemsCount)}
+        isHomePage={true}
         onShowMore={handleShowMore}
-        showMoreVisible={visibleItemsCount < homeItems.length} // Відображаємо кнопку, якщо є ще товари для показу
+        showMoreVisible={visibleItemsCount < homeItems.length}
       />
       <Footer />
     </>
@@ -39,12 +41,12 @@ function HomeContent() {
 
 function App() {
   return (
-    <ItemProvider> {/* Обгортка додатку у контекст */}
+    <ItemProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<HomeContent />} /> {/* Головна сторінка */}
-          <Route path="/catalog" element={<CatalogPage />} /> {/* Сторінка каталогу */}
-          <Route path="/item/:id" element={<ItemPage />} /> {/* Сторінка товару з деталями */}
+          <Route path="/" element={<HomeContent />} />
+          <Route path="/catalog" element={<CatalogPage />} />
+          <Route path="/item/:id" element={<ItemPage />} />
         </Routes>
       </Router>
     </ItemProvider>
@@ -52,3 +54,5 @@ function App() {
 }
 
 export default App;
+
+

@@ -1,68 +1,68 @@
-// src/context/ItemContext.js
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const ItemContext = createContext();
 
 export const ItemProvider = ({ children }) => {
-  const [items, setItems] = useState([]);
   const [homeItems, setHomeItems] = useState([]);
   const [catalogItems, setCatalogItems] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState({ type: '', size: '', material: '' });
+  const [searchTerm, setSearchTerm] = useState(''); // Додаємо `searchTerm` та `setSearchTerm`
 
-  // Функція для завантаження товарів із затримкою
-  const fetchItems = async (params = {}) => {
+  const fetchItems = async () => {
     setLoading(true);
     try {
-      // Штучна затримка в 500 мс
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      const response = await axios.get('http://localhost:5000/api/items', { params });
-      return response.data;
+      const response = await axios.get('http://localhost:5000/api/items');
+      setHomeItems(response.data);
+      setCatalogItems(response.data);
     } catch (error) {
-      console.error('Помилка при отриманні даних:', error);
-      return [];
+      console.error('Error fetching items:', error);
+      setHomeItems([]);
+      setCatalogItems([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Завантаження товарів для головної сторінки
   useEffect(() => {
-    const loadItems = async () => {
-      const itemsData = await fetchItems();
-      setItems(itemsData);
-      setHomeItems(itemsData);
-    };
-    loadItems();
+    fetchItems();
   }, []);
 
-  // Завантаження товарів для каталогу з урахуванням фільтрів і пошуку
+  // Автоматичне завантаження елементів при зміні `searchTerm`
   useEffect(() => {
-    const loadCatalogItems = async () => {
-      const itemsData = await fetchItems({ ...filters, searchTerm });
-      setCatalogItems(itemsData);
-    };
-    loadCatalogItems();
-  }, [filters, searchTerm]);
+    loadCatalogItems({ searchTerm });
+  }, [searchTerm]);
 
-  // Функція для оновлення фільтрів
-  const updateFilters = (newFilters) => {
-    setFilters(newFilters);
+  const loadCatalogItems = async (filters = {}) => {
+    setLoading(true);
+    try {
+      const response = await axios.get('http://localhost:5000/api/items', { params: filters });
+      setCatalogItems(response.data);
+    } catch (error) {
+      console.error('Error loading filtered items:', error);
+      setCatalogItems([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetFiltersAndSearch = () => {
+    setCatalogItems(homeItems);
+    setSearchTerm(''); // Скидаємо пошук
   };
 
   return (
     <ItemContext.Provider value={{
-      items,
       homeItems,
       catalogItems,
       loading,
-      setSearchTerm,
-      updateFilters,
+      setSearchTerm, // Додаємо setSearchTerm до контексту
+      loadCatalogItems,
+      resetFiltersAndSearch,
     }}>
       {children}
     </ItemContext.Provider>
   );
 };
+
+export default ItemProvider;

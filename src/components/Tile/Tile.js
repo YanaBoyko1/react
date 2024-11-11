@@ -1,4 +1,3 @@
-// src/components/Tile/Tile.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TileContainer, TileImage, TileTitle, TileDescription, TilePrice, ViewMoreButton } from './Tile.styles';
@@ -13,7 +12,7 @@ function Tile({ id, title, description, image, price, showExtra }) {
   return (
     <TileContainer>
       {/* Відображення зображення товару */}
-      <TileImage src={`http://localhost:5000${image}`} alt={title} />
+      <TileImage src={`http://localhost:5000${image}`} alt={title} /> {/* Додаємо повний шлях до зображення */}
 
       <TileTitle>{title}</TileTitle>
       <TileDescription>{description}</TileDescription>
