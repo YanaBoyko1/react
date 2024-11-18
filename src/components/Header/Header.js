@@ -3,8 +3,16 @@ import { HeaderContainer, Logo, Nav, StyledLink, SearchContainer } from './Heade
 import { ItemContext } from '../../context/ItemContext'; // Імпортуємо ItemContext
 
 function Header({ showSearch }) {
-  const { setSearchTerm } = useContext(ItemContext); // Отримуємо setSearchTerm з контексту
-  const [inputValue, setInputValue] = useState(''); // Локальний стан для пошукового поля
+  const context = useContext(ItemContext); // Викликаємо useContext на верхньому рівні
+  const [inputValue, setInputValue] = useState(''); // Викликаємо useState на верхньому рівні
+
+  // Перевірка, чи контекст існує
+  if (!context || !context.setSearchTerm) {
+    console.error('setSearchTerm is not defined in ItemContext. Ensure ItemProvider wraps your application.');
+    return null;
+  }
+
+  const { setSearchTerm } = context; // Деструктуризація після перевірки
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value); // Оновлюємо значення поля

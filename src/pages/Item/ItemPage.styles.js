@@ -1,3 +1,4 @@
+// src/pages/Item/ItemPage.styles.js
 import styled from 'styled-components';
 
 export const Image = styled.img`
@@ -62,4 +63,3 @@ export const AddToCartButton = styled.button`
     background-color: rgba(70, 62, 135, 1);
   }
 `;
-

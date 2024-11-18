@@ -1,0 +1,28 @@
+[
+  {
+    "id": 2,
+    "title": "Motorboat Z500",
+    "description": "Perfect motorboat for water sports enthusiasts.",
+    "price": 1200,
+    "type": "Motorboat",
+    "size": "Medium",
+    "material": "Aluminum",
+    "maxQuantity": 2,
+    "image": "/image/Luxury_Yacht_X300.jpg",
+    "quantity": 2,
+    "selectedColor": "Red"
+  },
+  {
+    "id": 2,
+    "title": "Motorboat Z500",
+    "description": "Perfect motorboat for water sports enthusiasts.",
+    "price": 1200,
+    "type": "Motorboat",
+    "size": "Medium",
+    "material": "Aluminum",
+    "maxQuantity": 2,
+    "image": "/image/Luxury_Yacht_X300.jpg",
+    "quantity": 2,
+    "selectedColor": "Green"
+  }
+]

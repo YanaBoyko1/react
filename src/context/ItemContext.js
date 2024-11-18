@@ -13,9 +13,6 @@ export const ItemProvider = ({ children }) => {
   const fetchItems = async () => {
     setLoading(true);
     try {
-      // Штучна затримка перед завантаженням даних
-      await new Promise(resolve => setTimeout(resolve, 500)); // 500 мс затримки
-
       const response = await axios.get('http://localhost:5000/api/items');
       setHomeItems(response.data);
       setCatalogItems(response.data);
@@ -37,13 +34,9 @@ export const ItemProvider = ({ children }) => {
     loadCatalogItems({ searchTerm });
   }, [searchTerm]);
 
-  // Функція для завантаження товарів із фільтрами та затримкою
   const loadCatalogItems = async (filters = {}) => {
     setLoading(true);
     try {
-      // Штучна затримка перед завантаженням фільтрованих даних
-      await new Promise(resolve => setTimeout(resolve, 500)); // 500 мс затримки
-
       const response = await axios.get('http://localhost:5000/api/items', { params: filters });
       setCatalogItems(response.data);
     } catch (error) {
@@ -54,10 +47,9 @@ export const ItemProvider = ({ children }) => {
     }
   };
 
-  // Функція для скидання фільтрів і пошуку
   const resetFiltersAndSearch = () => {
     setCatalogItems(homeItems);
-    setSearchTerm(''); // Скидаємо пошук
+    setSearchTerm('');
   };
 
   return (
@@ -65,7 +57,7 @@ export const ItemProvider = ({ children }) => {
       homeItems,
       catalogItems,
       loading,
-      setSearchTerm, // Додаємо setSearchTerm до контексту
+      setSearchTerm,
       loadCatalogItems,
       resetFiltersAndSearch,
     }}>
