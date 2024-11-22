@@ -12,6 +12,9 @@ import CatalogPage from './pages/Catalog/CatalogPage';
 import ItemPage from './pages/Item/ItemPage';
 import CartPage from './pages/CartPage/CartPage';
 import { ItemProvider, ItemContext } from './context/ItemContext';
+import CheckoutPage from './pages/CheckoutPage/CheckoutPage';
+import SuccessPage from './pages/SuccessPage/SuccessPage';
+
 
 function HomeContent() {
   const { homeItems, loading } = useContext(ItemContext);
@@ -50,6 +53,8 @@ function App() {
             <Route path="/catalog" element={<CatalogPage />} />
             <Route path="/item/:id" element={<ItemPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} /> {/* Новий маршрут */}
+            <Route path="/success" element={<SuccessPage />} /> {/* Новий маршрут */}
           </Routes>
         </Router>
       </Provider>

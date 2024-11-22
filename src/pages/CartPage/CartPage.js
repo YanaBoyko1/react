@@ -29,6 +29,10 @@ function CartPage() {
     navigate('/catalog');  // Перехід до каталогу
   };
 
+  const handleCheckout = () => {
+    navigate('/checkout'); // Перехід до сторінки Checkout
+  };
+
   return (
     <>
       <Header />
@@ -40,12 +44,13 @@ function CartPage() {
         <TotalAmount>Total amount: ${totalAmount}</TotalAmount>
         <ButtonContainer>
           <BackButton onClick={handleBackToCatalog}>Back to Catalog</BackButton>  {/* Кнопка повернення */}
-          <ContinueButton>Continue</ContinueButton>
+          <ContinueButton onClick={handleCheckout}>Continue</ContinueButton>
         </ButtonContainer>
       </CartContainer>
       <Footer />
     </>
   );
 }
+
 
 export default CartPage;
