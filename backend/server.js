@@ -12,11 +12,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Налаштування для обслуговування статичних файлів
-// app.use('/image', express.static(path.join(__dirname, '../public/image'))); 
-// '../public/image' - шлях до папки, якщо 'public' знаходиться поза 'backend'
+
 app.use('/image', express.static(path.join(__dirname, 'image')));
-// Підключення маршрутів
 const authRoutes = require('./routes/auth');
 const cartRoutes = require('./routes/cart');
 const itemRoutes = require('./routes/items');

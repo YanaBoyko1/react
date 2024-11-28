@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Form, Heading, Input, Button, Link } from './LoginPage.styles'; // Assuming the styled components are in 'LoginPage.styles.js'
+import { Container, Form, Heading, Input, Button, Link } from './LoginPage.styles';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError(''); // Очищення попередніх помилок
+
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -22,21 +25,21 @@ const LoginPage = () => {
 
       const data = await response.json();
       if (data.token) {
-        localStorage.setItem('authToken', data.token); // Store the token
-        navigate('/home'); // Redirect after successful login
+        localStorage.setItem('authToken', data.token); // Зберігаємо токен
+        navigate('/home'); // Перенаправлення після успішного логіну
       } else {
-        alert('Login failed. Please try again.');
+        setError('Login failed. Please try again.');
       }
     } catch (error) {
       console.error('Login error:', error.message);
-      alert('Login failed. Please try again.');
+      setError('Login failed. Please try again.');
     }
   };
 
   return (
     <Container>
       <Form onSubmit={handleLogin}>
-        <Heading>Submit the form to sign in</Heading>
+        <Heading>Log In</Heading>
         <Input
           type="email"
           placeholder="E-mail"
@@ -51,10 +54,11 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <Button type="submit">LOGIN ME</Button>
+        {error && <p style={{ color: 'red' }}>{error}</p>} {/* Виведення помилки */}
+        <Button type="submit">LOGIN</Button>
         <Link>
           <span>Not a member? </span>
-          <a href="/register">Sign up</a>
+          <button onClick={() => navigate('/register')}>Sign up</button> {/* Використовуємо navigate для переходу на реєстрацію */}
         </Link>
       </Form>
     </Container>

@@ -66,9 +66,9 @@ function App() {
       
             <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
             <Route path="/login" element={<LoginPage />} />
-            
-
             <Route path="/register" element={<RegisterPage />} />
+
+
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
         </ItemProvider>
