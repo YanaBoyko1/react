@@ -1,56 +1,91 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'; // Імпортуємо useNavigate
-import { loadCart } from '../../redux/actions/cartActions';
+import { useNavigate } from 'react-router-dom';
+import { loadCart, removeFromCart } from '../../redux/actions/cartActions';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import CartItem from '../../components/CartItem/CartItem';
-import { CartContainer, CartTitle, TotalAmount, ButtonContainer, BackButton, ContinueButton } from './CartPage.styles';
+import { selectCartItems, selectCartTotal } from '../../redux/selectors/cartSelectors';
+import {
+  CartContainer,
+  CartTitle,
+  TotalAmount,
+  ButtonContainer,
+  BackButton,
+  ContinueButton,
+} from './CartPage.styles';
 
-function CartPage() {
+const CartPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Ініціалізуємо useNavigate
-  const cartItems = useSelector((state) => state.cart.items);
-  const [totalAmount, setTotalAmount] = useState(0);
+  const navigate = useNavigate();
+  const cartItems = useSelector(selectCartItems);
+  const totalAmount = useSelector(selectCartTotal);
 
-  // Завантаження даних корзини при монтуванні компонента
+  const [localCart, setLocalCart] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    dispatch(loadCart());  // Завантажити дані корзини
+    const fetchCart = async () => {
+      try {
+        await dispatch(loadCart());
+      } catch (err) {
+        setError('Failed to load cart.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCart();
   }, [dispatch]);
 
-  // Обчислення загальної суми корзини
   useEffect(() => {
-    const total = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-    setTotalAmount(total);  // Обчислення суми
+    setLocalCart(cartItems);
   }, [cartItems]);
 
-  // Функція для повернення на каталог
-  const handleBackToCatalog = () => {
-    navigate('/catalog');  // Перехід до каталогу
-  };
+  const handleRemoveItem = async (id, selectedColor) => {
+    const updatedCart = localCart.filter(
+      (item) => !(item.id === id && item.selectedColor === selectedColor)
+    );
+    setLocalCart(updatedCart);
 
-  const handleCheckout = () => {
-    navigate('/checkout'); // Перехід до сторінки Checkout
+    try {
+      await dispatch(removeFromCart(id, selectedColor));
+    } catch (err) {
+      setError('Failed to remove item.');
+      setLocalCart(cartItems);
+    }
   };
 
   return (
     <>
       <Header />
       <CartContainer>
-        <CartTitle>Shopping Cart</CartTitle>
-        {cartItems.map((item) => (
-          <CartItem key={`${item.id}-${item.selectedColor}`} item={item} />
-        ))}
-        <TotalAmount>Total amount: ${totalAmount}</TotalAmount>
+        <CartTitle>Your Cart</CartTitle>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : localCart.length > 0 ? (
+          localCart.map((item) => (
+            <CartItem
+              key={`${item.id}-${item.selectedColor}`}
+              item={item}
+              onRemove={handleRemoveItem}
+            />
+          ))
+        ) : (
+          <p>Your cart is empty.</p>
+        )}
+        {localCart.length > 0 && (
+          <TotalAmount>Total Amount: ${totalAmount.toFixed(2)}</TotalAmount>
+        )}
         <ButtonContainer>
-          <BackButton onClick={handleBackToCatalog}>Back to Catalog</BackButton>  {/* Кнопка повернення */}
-          <ContinueButton onClick={handleCheckout}>Continue</ContinueButton>
+          <BackButton onClick={() => navigate('/catalog')}>Back to Catalog</BackButton>
+          <ContinueButton onClick={() => navigate('/checkout')}>Continue</ContinueButton>
         </ButtonContainer>
       </CartContainer>
       <Footer />
     </>
   );
-}
-
+};
 
 export default CartPage;

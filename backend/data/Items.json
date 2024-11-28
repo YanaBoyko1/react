@@ -1,0 +1,58 @@
+
+[
+  {
+    "id": 1,
+    "title": "Luxury Yacht X300",
+    "description": "An elegant yacht designed for comfort and luxury.",
+    "price": 2415,
+    "type": "Yacht",
+    "size": "Large",
+    "material": "Fiberglass",
+    "maxQuantity": 4,
+    "image": "/image/Fishing_Boat_Pro10.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Motorboat Z500",
+    "description": "Perfect motorboat for water sports enthusiasts.",
+    "price": 1200,
+    "type": "Motorboat",
+    "size": "Medium",
+    "material": "Aluminum",
+    "maxQuantity": 2,
+    "image": "/image/Luxury_Yacht_X300.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Fishing Boat Pro10",
+    "description": "Built for fishermen who need stability and durability.",
+    "price": 900,
+    "type": "Fishing Boat",
+    "size": "Small",
+    "material": "Wood",
+    "maxQuantity": 3,
+    "image": "/image/Fishing_Boat_Pro10.jpg"
+  },
+  {
+    "id": 4,
+    "title": "Sailing Boat S200",
+    "description": "A small, agile sailing boat suitable for beginners.",
+    "price": 1500,
+    "type": "Sailing Boat",
+    "size": "Small",
+    "material": "Wood",
+    "maxQuantity": 8,
+    "image": "/image/Fishing_Boat_Pro10.jpg"
+  },
+  {
+    "id": 5,
+    "title": "Catamaran C100",
+    "description": "Spacious catamaran for relaxing and leisure on the water.",
+    "price": 3000,
+    "type": "Catamaran",
+    "size": "Large",
+    "material": "Fiberglass",
+    "maxQuantity": 7,
+    "image": "/image/Luxury_Yacht_X300.jpg"
+  }
+]

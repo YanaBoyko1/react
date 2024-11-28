@@ -75,9 +75,3 @@ export const RemoveButton = styled.button`
   }
 `;
 
-export const ErrorMessage = styled.div`
-  color: red;
-  font-size: 14px;
-  margin-top: 10px;
-  font-weight: bold;
-`;

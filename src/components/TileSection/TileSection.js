@@ -1,4 +1,3 @@
-// src/components/TileSection/TileSection.js
 import React from 'react';
 import Tile from '../Tile/Tile';
 import { ButtonContainer, VisitButton } from './TileSection.styles';
@@ -17,18 +16,16 @@ function TileSection({ items, onShowMore, isHomePage, showMoreVisible }) {
             id={item.id}
             title={item.title}
             description={item.description}
-            image={item.image}
+            image={item.image} // Проп image передається з правильним шляхом
             price={item.price}
-            showExtra={!isHomePage} // Відображаємо "View More" тільки на сторінці каталогу
+            showExtra={!isHomePage} // Відображення "View More" тільки на сторінці каталогу
           />
         ))}
       </div>
 
-      {isHomePage && showMoreVisible && ( // Відображаємо кнопку "Visit" тільки на головній сторінці
+      {isHomePage && showMoreVisible && (
         <ButtonContainer>
-          <VisitButton onClick={onShowMore}>
-            Show More
-          </VisitButton>
+          <VisitButton onClick={onShowMore}>Show More</VisitButton>
         </ButtonContainer>
       )}
     </>

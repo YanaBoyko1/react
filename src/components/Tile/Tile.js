@@ -9,16 +9,22 @@ function Tile({ id, title, description, image, price, showExtra }) {
     navigate(`/item/${id}`);
   };
 
+  // Формуємо правильний шлях до зображення, усуваючи зайві слеші
+  const formattedImage = image.replace(/\/+/g, '/'); // Усуває зайві слеші між частинами шляху
+
+  console.log("Formatted Image URL:", formattedImage); // Логування шляху до зображення
+
   return (
     <TileContainer>
-      {/* Відображення зображення товару */}
-      <TileImage src={`http://localhost:5000${image}`} alt={title} /> {/* Додаємо повний шлях до зображення */}
-
+      <TileImage
+        src={`http://localhost:5000${formattedImage}`}  // Використовуємо правильний шлях для зображення
+        alt={title}
+      />
+      
       <TileTitle>{title}</TileTitle>
       <TileDescription>{description}</TileDescription>
       <TilePrice>Price: ${price}</TilePrice>
 
-      {/* Кнопка "View More", якщо showExtra === true */}
       {showExtra && (
         <ViewMoreButton onClick={handleViewMore}>View More</ViewMoreButton>
       )}

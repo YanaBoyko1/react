@@ -2,7 +2,6 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-import ErrorSummary from '../../components/ErrorSummary/ErrorSummary';
 
 import {
   CheckoutContainer,
@@ -13,32 +12,43 @@ import {
   SubmitButton,
 } from './CheckoutPage.styles';
 
+// Компонент для помилок
+const ErrorSummary = ({ errors }) => (
+  <div style={{ color: 'red', marginBottom: '10px' }}>
+    {Object.keys(errors).map((key) => (
+      <div key={key}>{errors[key]}</div>
+    ))}
+  </div>
+);
+
 const CheckoutPage = () => {
   const navigate = useNavigate();
 
+  // Схема валідації форми
   const validationSchema = Yup.object({
-    firstName: Yup.string()
-      .matches(/^[a-zA-Z]+$/, 'First name must contain only letters')
-      .max(20, 'First name must be at most 20 characters')
-      .required('First name is a required field'),
-    lastName: Yup.string()
-      .matches(/^[a-zA-Z]+$/, 'Last name must contain only letters')
-      .max(20, 'Last name must be at most 20 characters')
-      .required('Last name is a required field'),
+    firstName: Yup.string().required('First name is required'),
+    lastName: Yup.string().required('Last name is required'),
     email: Yup.string()
-      .matches(/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/, 'Email must be valid (e.g., example@gmail.com)')
-      .required('Email is a required field'),
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        'Invalid email format'
+      )
+      .required('Email is required'),
     phone: Yup.string()
-      .matches(/^\d*$/, 'Phone number must be only digits') // Не обов’язкове, але має бути числовим
-      .max(15, 'Phone number must be at most 15 digits'),
-    address: Yup.string()
-      .max(50, 'Address must be at most 50 characters')
-      .required('Address is a required field'),
+      .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits') // Регулярний вираз для телефону
+      .notRequired(),  // Робимо телефон необов'язковим
+    address: Yup.string().required('Address is required'),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
-    navigate('/success'); // Перехід на Success сторінку
+  // Обробник відправки форми
+  const handleSubmit = async (values) => {
+    try {
+      console.log('Order details:', values);
+      navigate('/success');  // Перехід на сторінку успішного оформлення
+    } catch (error) {
+      console.error('Error during checkout:', error);
+      alert('Checkout failed. Please try again.');
+    }
   };
 
   return (
@@ -49,7 +59,7 @@ const CheckoutPage = () => {
           firstName: '',
           lastName: '',
           email: '',
-          phone: '',
+          phone: '', // Початкове значення порожнє для телефону
           address: '',
         }}
         validationSchema={validationSchema}
@@ -57,34 +67,32 @@ const CheckoutPage = () => {
       >
         {({ errors, touched }) => (
           <Form>
-            <ErrorSummary
-              errors={Object.keys(errors).reduce((acc, key) => {
-                if (touched[key]) {
-                  acc[key] = errors[key];
-                }
-                return acc;
-              }, {})}
-            />
+            <ErrorSummary errors={errors} />  {/* Виведення повідомлень про помилки */}
 
             <FormField>
               <Label htmlFor="firstName">First Name</Label>
               <Field as={Input} name="firstName" id="firstName" />
+              {errors.firstName && touched.firstName && <div>{errors.firstName}</div>}
             </FormField>
             <FormField>
               <Label htmlFor="lastName">Last Name</Label>
               <Field as={Input} name="lastName" id="lastName" />
+              {errors.lastName && touched.lastName && <div>{errors.lastName}</div>}
             </FormField>
             <FormField>
               <Label htmlFor="email">Email</Label>
               <Field as={Input} name="email" id="email" type="email" />
+              {errors.email && touched.email && <div>{errors.email}</div>}
             </FormField>
             <FormField>
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="phone">Phone (Optional)</Label>
               <Field as={Input} name="phone" id="phone" />
+              {errors.phone && touched.phone && <div>{errors.phone}</div>}
             </FormField>
             <FormField>
               <Label htmlFor="address">Address</Label>
               <Field as={Input} name="address" id="address" />
+              {errors.address && touched.address && <div>{errors.address}</div>}
             </FormField>
             <SubmitButton type="submit">Submit</SubmitButton>
           </Form>
@@ -95,4 +103,3 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
-

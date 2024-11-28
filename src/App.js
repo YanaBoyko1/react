@@ -1,31 +1,34 @@
-// src/App.js
-import React, { useContext, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useContext } from 'react'; // Import useState and useContext
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; 
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import LoginPage from './pages/LoginPage/LoginPage';
+import RegisterPage from './pages/RegisterPage/RegisterPage';
+import CatalogPage from './pages/Catalog/CatalogPage';
+import CartPage from './pages/CartPage/CartPage';
+import { ItemProvider, ItemContext } from './context/ItemContext'; // Import ItemContext and ItemProvider
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import MainSection from './components/MainSection/MainSection';
-import TileSection from './components/TileSection/TileSection';
-import Spinner from './components/Spinner/Spinner';
-import CatalogPage from './pages/Catalog/CatalogPage';
-import ItemPage from './pages/Item/ItemPage';
-import CartPage from './pages/CartPage/CartPage';
-import { ItemProvider, ItemContext } from './context/ItemContext';
 import CheckoutPage from './pages/CheckoutPage/CheckoutPage';
 import SuccessPage from './pages/SuccessPage/SuccessPage';
-
+import MainSection from './components/MainSection/MainSection';
+import TileSection from './components/TileSection/TileSection';
+import ItemPage from './pages/Item/ItemPage';
 
 function HomeContent() {
-  const { homeItems, loading } = useContext(ItemContext);
-  const [visibleItemsCount, setVisibleItemsCount] = useState(3);
+  const { homeItems, loading } = useContext(ItemContext); // Using ItemContext
+  const [visibleItemsCount, setVisibleItemsCount] = useState(3); // Using useState
 
   const handleShowMore = () => {
     setVisibleItemsCount((prevCount) => prevCount + 3);
   };
 
   if (loading) {
-    return <Spinner />;
+    return <div>Завантаження...</div>;
+  }
+
+  if (homeItems.length === 0) {
+    return <div>No items available</div>;
   }
 
   return (
@@ -43,22 +46,34 @@ function HomeContent() {
   );
 }
 
+function ProtectedRoute({ children }) {
+  const isAuthenticated = !!localStorage.getItem('authToken');
+  return isAuthenticated ? children : <Navigate to="/login" />;
+}
+
 function App() {
   return (
-    <ItemProvider>
-      <Provider store={store}>
-        <Router>
+    <Provider store={store}>
+      <Router> {/* Ensure Router wraps the entire app */}
+        <ItemProvider> {/* Ensure ItemProvider is inside Router */}
           <Routes>
-            <Route path="/" element={<HomeContent />} />
-            <Route path="/catalog" element={<CatalogPage />} />
-            <Route path="/item/:id" element={<ItemPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} /> {/* Новий маршрут */}
-            <Route path="/success" element={<SuccessPage />} /> {/* Новий маршрут */}
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<ProtectedRoute><HomeContent /></ProtectedRoute>} />
+            <Route path="/catalog" element={<ProtectedRoute><CatalogPage /></ProtectedRoute>} />
+            <Route path="/item/:id" element={<ProtectedRoute><ItemPage /></ProtectedRoute>} />
+            <Route path="/checkout" element={<CheckoutPage />} /> 
+            <Route path="/success" element={<SuccessPage />} /> 
+      
+            <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
+            <Route path="/login" element={<LoginPage />} />
+            
+
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
-        </Router>
-      </Provider>
-    </ItemProvider>
+        </ItemProvider>
+      </Router>
+    </Provider>
   );
 }
 

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { increaseQuantity, decreaseQuantity, removeFromCart } from '../../redux/actions/cartActions';
-import Alert from '../Alert/Alert'; // Імпортуємо Alert
+import { increaseQuantity, decreaseQuantity } from '../../redux/actions/cartActions';
 import {
   CartItemContainer,
   ItemImage,
@@ -14,52 +13,66 @@ import {
   RemoveButton,
 } from './CartItem.styles';
 
-function CartItem({ item }) {
+const CartItem = ({ item, onRemove }) => {
   const dispatch = useDispatch();
-  const [error, setError] = useState("");  // Для зберігання повідомлення про помилку
 
-  // Функція для збільшення кількості
+  // Обробники для збільшення та зменшення кількості
   const handleIncrease = () => {
-    if (item.quantity < item.maxQuantity) {
-      dispatch(increaseQuantity(item.id, item.selectedColor));  // Передаємо id та selectedColor
-      setError("");  // Очищаємо повідомлення про помилку
-    } else {
-      setError(`Maximum quantity for this product: ${item.maxQuantity}`);  // Якщо більше максимальної кількості
+    if (item.quantity < 10) {  // Обмеження на кількість 10
+      dispatch(increaseQuantity(item.id, item.selectedColor));
     }
   };
 
-  // Функція для зменшення кількості
   const handleDecrease = () => {
     if (item.quantity > 1) {
-      dispatch(decreaseQuantity(item.id, item.selectedColor));  // Передаємо id та selectedColor
-      setError("");  // Очищаємо повідомлення про помилку
+      dispatch(decreaseQuantity(item.id, item.selectedColor));
     }
-  };
-
-  // Функція для видалення товару
-  const handleRemove = () => {
-    dispatch(removeFromCart(item.id, item.selectedColor));
   };
 
   return (
     <CartItemContainer>
-      <ItemImage src={item.image} alt={item.title} />
+      {/* Формуємо правильний шлях до зображення */}
+      <ItemImage 
+        src={`http://localhost:5000/image/${item.image}`}  // Формуємо правильний шлях
+        alt={item.title}
+      />
+
+      {/* Деталі товару */}
       <ItemDetails>
         <ItemTitle>{item.title}</ItemTitle>
-        {item.selectedColor && <ItemProperty>Color: {item.selectedColor}</ItemProperty>}
+        {item.selectedColor ? (
+          <ItemProperty>Color: {item.selectedColor}</ItemProperty>
+        ) : (
+          <ItemProperty style={{ color: 'red' }}>No color selected</ItemProperty>
+        )}
       </ItemDetails>
-      <QuantityControls>
-        <QuantityButton onClick={handleDecrease}>-</QuantityButton>
-        <span>{item.quantity}</span>
-        <QuantityButton onClick={handleIncrease}>+</QuantityButton>
-      </QuantityControls>
-      <ItemPrice>${item.price * item.quantity}</ItemPrice>
-      <RemoveButton onClick={handleRemove}>Remove</RemoveButton> {/* Кнопка для видалення товару */}
 
-      {/* Виведення алерту, якщо є помилка */}
-      {error && <Alert message={error} />}
+      {/* Кількість товару */}
+      <QuantityControls>
+        <QuantityButton
+          onClick={handleDecrease}
+          disabled={item.quantity <= 1} // Блокуємо кнопку, якщо кількість = 1
+        >
+          -
+        </QuantityButton>
+        <span>{item.quantity}</span>
+        <QuantityButton
+          onClick={handleIncrease}
+          disabled={item.quantity >= 10} // Блокуємо кнопку, якщо кількість досягла 10
+        >
+          +
+        </QuantityButton>
+      </QuantityControls>
+
+      {/* Ціна товару */}
+      <ItemPrice>${(item.price * item.quantity).toFixed(2)}</ItemPrice>
+
+      {/* Кнопка видалення */}
+      <RemoveButton onClick={() => onRemove(item.id, item.selectedColor)}>
+        Remove
+      </RemoveButton>
     </CartItemContainer>
   );
-}
+};
 
 export default CartItem;

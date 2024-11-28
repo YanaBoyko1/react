@@ -1,7 +1,7 @@
 // src/pages/Item/ItemPage.styles.js
 import styled from 'styled-components';
 
-export const Image = styled.img`
+export const ItemImage = styled.img`
   width: 500px;
   max-height: 400px;
   object-fit: cover;

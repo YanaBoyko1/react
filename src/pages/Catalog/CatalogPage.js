@@ -6,15 +6,15 @@ import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import Spinner from '../../components/Spinner/Spinner';
 
-function CatalogPage() {
+const CatalogPage = () => {
   const { catalogItems, loading, loadCatalogItems, resetFiltersAndSearch } = useContext(ItemContext);
 
   useEffect(() => {
     resetFiltersAndSearch(); // Очищення фільтрів при завантаженні сторінки
-  }, []);
+  }, [resetFiltersAndSearch]);
 
   const handleFilterChange = (filters) => {
-    loadCatalogItems(filters); // Викликаємо `loadCatalogItems` з фільтрами
+    loadCatalogItems(filters);
   };
 
   return (
@@ -24,15 +24,11 @@ function CatalogPage() {
       {loading ? (
         <Spinner />
       ) : (
-        <TileSection
-          items={catalogItems}
-          isHomePage={false}
-          showExtra={true}
-        />
+        <TileSection items={catalogItems} isHomePage={false} showExtra={true} />
       )}
       <Footer />
     </>
   );
-}
+};
 
 export default CatalogPage;
