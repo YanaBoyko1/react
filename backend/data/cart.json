@@ -1,28 +1,28 @@
 [
   {
-    "id": 2,
-    "title": "Motorboat Z500",
-    "description": "Perfect motorboat for water sports enthusiasts.",
-    "price": 1200,
-    "type": "Motorboat",
-    "size": "Medium",
-    "material": "Aluminum",
-    "maxQuantity": 2,
+    "id": 5,
+    "title": "Catamaran C100",
+    "description": "Spacious catamaran for relaxing and leisure on the water.",
+    "price": 3000,
+    "type": "Catamaran",
+    "size": "Large",
+    "material": "Fiberglass",
+    "maxQuantity": 7,
     "image": "/image/Luxury_Yacht_X300.jpg",
-    "quantity": 2,
+    "quantity": 7,
     "selectedColor": "Red"
   },
   {
-    "id": 2,
-    "title": "Motorboat Z500",
-    "description": "Perfect motorboat for water sports enthusiasts.",
-    "price": 1200,
-    "type": "Motorboat",
-    "size": "Medium",
-    "material": "Aluminum",
-    "maxQuantity": 2,
-    "image": "/image/Luxury_Yacht_X300.jpg",
-    "quantity": 2,
-    "selectedColor": "Green"
+    "id": 1,
+    "title": "Luxury Yacht X300",
+    "description": "An elegant yacht designed for comfort and luxury.",
+    "price": 2415,
+    "type": "Yacht",
+    "size": "Large",
+    "material": "Fiberglass",
+    "maxQuantity": 4,
+    "image": "/image/Fishing_Boat_Pro10.jpg",
+    "quantity": 1,
+    "selectedColor": "Red"
   }
 ]
