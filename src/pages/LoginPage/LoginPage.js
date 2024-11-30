@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../../api/api'; // Імпортуємо функцію login з API
 import { Container, Form, Heading, Input, Button, Link } from './LoginPage.styles';
 
 const LoginPage = () => {
@@ -13,17 +14,9 @@ const LoginPage = () => {
     setError(''); // Очищення попередніх помилок
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Invalid login credentials');
-      }
-
-      const data = await response.json();
+      // Використовуємо нову функцію login з API
+      const data = await login(email, password);
+      
       if (data.token) {
         localStorage.setItem('authToken', data.token); // Зберігаємо токен
         navigate('/home'); // Перенаправлення після успішного логіну
@@ -31,8 +24,8 @@ const LoginPage = () => {
         setError('Login failed. Please try again.');
       }
     } catch (error) {
-      console.error('Login error:', error.message);
-      setError('Login failed. Please try again.');
+      console.error('Login error:', error);
+      setError('Login failed. Please try again.'); // Виведення помилки
     }
   };
 

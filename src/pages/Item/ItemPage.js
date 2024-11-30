@@ -15,6 +15,7 @@ import {
   AddToCartButton,
 } from './ItemPage.styles';
 
+
 function ItemPage() {
   const { id } = useParams();
   const [item, setItem] = useState(null);

@@ -67,8 +67,7 @@ const CheckoutPage = () => {
       >
         {({ errors, touched }) => (
           <Form>
-            <ErrorSummary errors={errors} />  {/* Виведення повідомлень про помилки */}
-
+            <ErrorSummary errors={errors} />  
             <FormField>
               <Label htmlFor="firstName">First Name</Label>
               <Field as={Input} name="firstName" id="firstName" />

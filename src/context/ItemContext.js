@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Використовуємо useNavigate для редиректу
+import { useNavigate } from 'react-router-dom';
+import { fetchItems } from '../api/api'; // Оновлений шлях до файлу
 
 export const ItemContext = createContext();
 
@@ -11,8 +11,7 @@ export const ItemProvider = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate(); // Хук для редиректу
 
-  // Функція для отримання даних
-  const fetchItems = useCallback(async () => {
+  const fetchCatalogItems = useCallback(async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('authToken'); // Отримуємо токен із localStorage
@@ -26,14 +25,9 @@ export const ItemProvider = ({ children }) => {
         return;
       }
 
-      // Запит на сервер
-      const response = await axios.get('http://localhost:5000/api/items', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      // Збереження отриманих даних
-      setHomeItems(response.data);
-      setCatalogItems(response.data); // ініціалізація каталогу
+      const data = await fetchItems(token);  // Використовуємо імпортовану функцію fetchItems
+      setHomeItems(data);
+      setCatalogItems(data);
     } catch (error) {
       console.error('Error fetching items:', error.message);
       if (error.response?.status === 401) {
@@ -58,8 +52,8 @@ export const ItemProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchItems(); // Отримання даних після монтування компонента
-  }, [fetchItems]);
+    fetchCatalogItems(); // Отримуємо дані після монтування компонента
+  }, [fetchCatalogItems]);
 
   return (
     <ItemContext.Provider
